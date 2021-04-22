@@ -1,0 +1,1 @@
+# strace-like-program
