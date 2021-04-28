@@ -1,10 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <dlfcn.h>
+#include <fcntl.h>
 #include <limits.h>
 #include <unistd.h>
 #include <sys/stat.h>
 #include <ctype.h>
+#include <stdarg.h>
 
 
 
@@ -36,7 +38,7 @@ static FILE *(*ori_fopen)(const char *pathname, const char *mode);
 static int (*ori_fclose)(FILE *stream);
 static size_t (*ori_fread)(void *ptr, size_t size, size_t nmemb, FILE *stream);
 static size_t (*ori_fwrite)(const void *ptr, size_t size, size_t nmemb, FILE *stream);
-static int (*ori_open)(const char *pathname, int flags);
+static int (*ori_open)(const char *pathname, int flags, ...);
 static int (*ori_close)(int fd);
 static ssize_t (*ori_read)(int fd, void *buf, size_t count);
 static ssize_t (*ori_write)(int fd, const void *buf, size_t count);
@@ -170,16 +172,28 @@ size_t fwrite(const void *ptr, size_t size, size_t nmemb, FILE *stream)
     return ret;
 }
 
-int open(const char *pathname, int flags)
+int open(const char *pathname, int flags, ...)
 {
     DLSYM(open);
     char real_pathname[PATH_MAX];
+    va_list args;
+    va_start(args, flags);
+    mode_t mode = va_arg(args, mode_t);
+    int ret; 
 
     char *res = realpath(pathname, real_pathname);
-    int ret = ori_open(pathname, flags);
-
-    //fprintf(stderr, "[logger] %s(\"%s\", %o) = %d\n", __func__, res ? real_pathname : pathname, flags, ret);
-    log("%s(\"%s\", %o) = %d\n", __func__, res ? real_pathname : pathname, flags, ret);
+    if ((flags & O_CREAT) != O_CREAT)
+    {   
+        ret = ori_open(pathname, flags);
+        log("%s(\"%s\", %o) = %d\n", __func__, res ? real_pathname : pathname, flags, ret);
+    }
+    else
+    {
+        ret = ori_open(pathname, flags, mode);
+        log("%s(\"%s\", %o, %o) = %d\n", __func__, res ? real_pathname : pathname, flags, mode, ret);
+    }
+    va_end(args); 
+    
     return ret;
 }
 

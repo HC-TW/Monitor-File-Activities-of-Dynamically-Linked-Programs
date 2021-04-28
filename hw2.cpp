@@ -14,12 +14,6 @@ int main(int argc, char *argv[])
     int c, cmdIndex = 1;
     pid_t pid;
 
-    if (argc == 1)
-    {
-        cerr << "no command given." << endl;
-        return 1;
-    }
-
     for (int i = 1; i < argc; i++)
     {
         if (!strcmp(argv[i], "--"))
@@ -47,6 +41,12 @@ int main(int argc, char *argv[])
                  << endl;
             return 1;
         }
+
+    if (cmdIndex == argc)
+    {
+        cerr << "no command given." << endl;
+        return 1;
+    }
 
     if ((pid = fork()) == 0)
     {
