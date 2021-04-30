@@ -23,8 +23,9 @@ int main(int argc, char *argv[])
         }
     }
 
-    setenv("LD_PRELOAD", "./logger.so", 1);
-    while ((c = getopt(argc, argv, "o:p:")) != -1)
+    if (cmdIndex != 1)
+    {
+        while ((c = getopt(argc, argv, "o:p:")) != -1)
         switch (c)
         {
         case 'o':
@@ -41,7 +42,9 @@ int main(int argc, char *argv[])
                  << endl;
             return 1;
         }
-
+    }
+    setenv("LD_PRELOAD", "./logger.so", 1);
+    
     if (cmdIndex == argc)
     {
         cerr << "no command given." << endl;
