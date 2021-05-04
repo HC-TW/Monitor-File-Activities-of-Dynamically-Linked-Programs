@@ -184,7 +184,7 @@ size_t fread(void *ptr, size_t size, size_t nmemb, FILE *stream)
     size_t ret = ori_fread(ptr, size, nmemb, stream);
 
     //fprintf(stderr, "[logger] %s(\"%s\", %zu, %zu, \"%s\") = %zu\n", __func__, char_buf, size, nmemb, link_dest, ret);
-    log("%s(\"%s\", %zu, %zu, \"%s\") = %zu\n", __func__, char_buf, size, nmemb, link_dest, ret * size);
+    log("%s(\"%s\", %zu, %zu, \"%s\") = %zu\n", __func__, char_buf, size, nmemb, link_dest, ret);
     return ret;
 }
 
@@ -199,7 +199,7 @@ size_t fwrite(const void *ptr, size_t size, size_t nmemb, FILE *stream)
     size_t ret = ori_fwrite(ptr, size, nmemb, stream);
 
     //fprintf(stderr, "[logger] %s(\"%s\", %zu, %zu, \"%s\") = %zu\n", __func__, char_buf, size, nmemb, link_dest, ret);
-    log("%s(\"%s\", %zu, %zu, \"%s\") = %zu\n", __func__, char_buf, size, nmemb, link_dest, ret * size);
+    log("%s(\"%s\", %zu, %zu, \"%s\") = %zu\n", __func__, char_buf, size, nmemb, link_dest, ret);
     return ret;
 }
 
