@@ -60,6 +60,10 @@ int main(int argc, char *argv[])
         }
         cmd[argc - cmdIndex] = NULL;
 
+        int fd = dup(2);
+        char str[10];
+        sprintf(str, "%d", fd);
+        setenv("LOGGER_STDERR", str, 1);
         execvp(cmd[0], cmd);
     }
     else
