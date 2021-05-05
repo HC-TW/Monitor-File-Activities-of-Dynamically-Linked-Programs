@@ -1,3 +1,5 @@
+#define _GNU_SOURCE
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <dlfcn.h>
@@ -213,7 +215,7 @@ int open(const char *pathname, int flags, ...)
     int ret;
 
     char *res = realpath(pathname, real_pathname);
-    if ((flags & O_CREAT) != O_CREAT)
+    if ((flags & O_CREAT) != O_CREAT && (flags & O_TMPFILE) != O_TMPFILE)
     {
         ret = ori_open(pathname, flags);
         log("%s(\"%s\", %o) = %d\n", __func__, res ? real_pathname : pathname, flags, ret);
@@ -238,7 +240,7 @@ int open64(const char *pathname, int flags, ...)
     int ret;
 
     char *res = realpath(pathname, real_pathname);
-    if ((flags & O_CREAT) != O_CREAT)
+    if ((flags & O_CREAT) != O_CREAT && (flags & O_TMPFILE) != O_TMPFILE)
     {
         ret = ori_open64(pathname, flags);
         log("%s(\"%s\", %o) = %d\n", __func__, res ? real_pathname : pathname, flags, ret);
