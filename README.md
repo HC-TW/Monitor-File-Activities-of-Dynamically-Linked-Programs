@@ -16,3 +16,4 @@ The list of monitored library calls is shown below.
 |:-:|:-:|:-:|:-:|:-:|:-:|:-:|
 |chmod|chown|close|creat|fclose|fopen|fread|
 |fwrite|open|read|remove|rename|tmpfile|write|
+|creat64|open64|fopen64|tmpfile64|
